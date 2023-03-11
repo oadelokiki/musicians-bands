@@ -31,4 +31,22 @@ describe('Band and Musician Models', () => {
         expect(testMusician.name).toBe('ben');
 	expect(testMusician.instrument).toBe('oboe')
     })
+
+	test('association', async () => {
+	let testBand = await Band.create({
+		name: "the jets",
+		genre: "rock",
+		Musician:  {
+			name: "benny",
+			instrument: "guitar"
+		}
+
+	}, {
+		include: [
+			Band.Musician	
+		]	
+	})
+		console.log(testBand.Musician)
+		expect(testBand.Musician.name).toBe("benny")
+	})
 })
