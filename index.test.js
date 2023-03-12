@@ -116,4 +116,57 @@ describe('Band and Musician Models', () => {
 	expect(partBandResults.length).toBe(2)
         })
 
+
+	//eager loading
+	
+	test('find All bands', async () => {
+        	
+		//find all bands
+		
+		let results = await Band.findAll();
+
+		expect(results.length < 1).toBe(false);
+    	})
+
+	test('find all bands including the musician model', async () => {
+        // TODO - test creating a band
+		let before  = await Band.findAll({include: "Musicians"});
+       		 console.log("before: " + before.length);
+			let testBand = await Band.create({
+                	name: "Benny",
+                	genre: "Rock",
+			Musicians: [{
+				name: "james",
+				instrument: "voice"
+			}]
+        	})
+       		let after  = await Band.findAll({include: "Musicians"});
+		console.log("after: " + after.length);
+		expect(before.length < after.length).toBe(true)
+    	})
+	test('find all bands including the musician model', async () => {
+        // TODO - test creating a band
+                let before  = await Band.findAll({include: "Songs"});
+                 console.log("before: " + before.length);
+                        let testBand = await Band.create({
+                        name: "Benny",
+                        genre: "Rock",
+                        Musicians: [{
+                                name: "james",
+                                instrument: "voice"
+                        }],
+			Songs: [{
+				title: "benny and the jets",
+				year: 2001
+			}]
+                })
+                let after  = await Band.findAll({include: "Songs"});
+                console.log("after: " + after.length);
+		expect(before.length < after.length).toBe(true)
+
+        })
+
+
+
+
 })
